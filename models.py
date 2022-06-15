@@ -11,7 +11,8 @@ def connect_db(app):
     db.init_app(app)
 
 class User(db.Model):
-    """User. TODO """
+    """User class that includes an id, the user's first name, last name,
+    and an image url"""
 
     __tablename__ = "users"
 

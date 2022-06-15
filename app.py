@@ -17,20 +17,24 @@ db.create_all()
 
 @app.get('/')
 def display_home():
+    """Show list of users as homepage"""
     return redirect("/users")
 
 @app.get('/users')
 def display_users():
+    """Show list of users"""
     users = User.query.all()
 
     return render_template('list.html', users=users)
 
 @app.get('/users/new')
 def display_form_add_user():
+    """Show form to add a user"""
     return render_template("form.html")
 
 @app.post('/users/new')
 def add_user():
+    """Gather form info to create a new user, add to database, and return to list"""
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
     img_url = request.form["img_url"]
