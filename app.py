@@ -48,10 +48,17 @@ def add_user():
 
     return redirect('/users')
 
-# @app.get('/users/<user-id>')
+@app.get('/users/<user-id>')
+def display_user_page(user-id):
+    """Show individual users's page."""
 
-# @app.get('/users/<user-id>/edit')
+    return render_template('detail.html', user-id)
 
-# @app.post('/users/<user-id>/edit')
+@app.get('/users/<user-id>/edit')
+def display_form_edit_user(user-id):
 
-# @app.post('/users/<user-id>/delete')
+    return render_template('edit.html')
+
+@app.post('/users/<user-id>/edit')
+
+@app.post('/users/<user-id>/delete')
