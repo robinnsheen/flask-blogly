@@ -10,8 +10,8 @@
   <p>First Name:     <input name="first_name" placeholder={{ first_name }}></p>
   <p>Last Name:  <input name="last_name" placeholder={{ last_name }}></p>
   <p>Image URL:   <input name="img_url" placeholder={{ img_url }}></p>
-  <button formaction="/users/{{ user_id }}" formmethod="GET">Cancel</button>
-  <button formaction="/users/{{ user_id }}/edit" formmethod="POST">Save</button>
+  <button formaction="/users/{{ user.id }}" formmethod="GET">Cancel</button>
+  <button formaction="/users/{{ user.id }}/edit" formmethod="POST">Save</button>
 </form>
 
 

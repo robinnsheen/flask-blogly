@@ -41,24 +41,26 @@ def add_user():
 
     new_user = User(first_name=first_name,
                     last_name=last_name,
-                    image_url=img_url)
+                    img_url=img_url)
 
     db.session.add(new_user)
     db.session.commit()
 
     return redirect('/users')
 
-@app.get('/users/<user-id>')
-def display_user_page(user-id):
-    """Show individual users's page."""
+@app.get('/users/<int:user_id>')
+def display_user_page(user_id):
 
-    return render_template('detail.html', user-id)
+    user = User.query.get_or_404(user_id)
+    return render_template('detail.html', user=user)
 
-@app.get('/users/<user-id>/edit')
-def display_form_edit_user(user-id):
+@app.get('/users/<int:user_id>/edit')
+def display_form_edit_user(user_id):
 
-    return render_template('edit.html')
+    user = User.query.get_or_404(user_id)
 
-@app.post('/users/<user-id>/edit')
+    return render_template('edit.html', user = user)
 
-@app.post('/users/<user-id>/delete')
+# @app.post('/users/<int:user_id>/edit')
+
+# @app.post('/users/<int:user_id>/delete')

@@ -26,6 +26,6 @@ class User(db.Model):
     last_name = db.Column(db.String(50),
                           nullable=False)
 
-    image_url = db.Column(db.String,
+    img_url = db.Column(db.String,
                           nullable=False,
                           default="https://picsum.photos/id/237/200/300")
