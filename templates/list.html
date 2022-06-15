@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} List {% endblock %}
+
+{% block content %}
+
+<h1>Users</h1>
+
+{% for user in users %}
+  <li><a href="/TODO">{{ user }}</a></li>
+{% endfor %}
+
+<button action="/TODO">Add user</button>
+
+{% endblock %}
