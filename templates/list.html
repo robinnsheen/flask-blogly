@@ -6,10 +6,20 @@
 
 <h1>Users</h1>
 
+<ul>
 {% for user in users %}
   <li><a href="/TODO">{{ user }}</a></li>
 {% endfor %}
+</ul>
 
-<button action="/TODO">Add user</button>
+<h2>Create a user</h2>
+
+<form action=/TODO: method="POST">
+  <p>First Name:     <input name="first_name" placeholder="Enter a first name"></p>
+  <p>Last Name:  <input name="last_name" placeholder="Enter a last name"></p>
+  <p>Image URL:   <input name="img_url" placeholder="Provide an image of this user"></p>
+  <button action="submit">Add</button>
+</form>
+
 
 {% endblock %}
