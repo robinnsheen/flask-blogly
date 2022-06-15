@@ -10,3 +10,20 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
 db.create_all()
+
+@app.get('/')
+
+
+@app.get('/users')
+
+@app.get('/users/new')
+
+@app.post('/users/new')
+
+@app.get('/users/<user-id>')
+
+@app.get('/users/<user-id>/edit')
+
+@app.post('/users/<user-id>/edit')
+
+@app.post('/users/<user-id>/delete')
