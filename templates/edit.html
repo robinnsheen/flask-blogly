@@ -7,9 +7,9 @@
 <h1>Edit a user</h1>
 
 <form>
-  <p>First Name:     <input name="first_name" placeholder={{ first_name }}></p>
-  <p>Last Name:  <input name="last_name" placeholder={{ last_name }}></p>
-  <p>Image URL:   <input name="img_url" placeholder={{ img_url }}></p>
+  <p>First Name:     <input name="first_name" value = {{ user.first_name }}></p>
+  <p>Last Name:  <input name="last_name" value = {{ user.last_name }}></p>
+  <p>Image URL:   <input name="img_url" value = {{ user.img_url }}></p>
   <button formaction="/users/{{ user.id }}" formmethod="GET">Cancel</button>
   <button formaction="/users/{{ user.id }}/edit" formmethod="POST">Save</button>
 </form>
