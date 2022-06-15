@@ -7,6 +7,10 @@
 <img href={{ img_url }}>
 <h1> {{ first_name }} {{ last_name }}</h1>
 
-<button action="/TODO: edit page">Edit</button>
-<button action="/TODO: delete from db?">Delete</button>
+<a href="/users/new">Add user</a>
+
+<form >
+    <button formaction="/users/{{ user-id }}/edit" formmethod="GET">Edit</button>
+    <button formaction="/users" formmethod="POST">Delete</button>
+</form>
 {% endblock %}
