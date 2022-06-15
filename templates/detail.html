@@ -1,3 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}User Details{% endblock %}
+
+{% block content %}
+
+<img href={{ img_url }}>
+<h1> {{ first_name }} {{ last_name }}</h1>
+
+<button action="/TODO: edit page">Edit</button>
+<button action="/TODO: delete from db?">Delete</button>
+{% endblock %}
