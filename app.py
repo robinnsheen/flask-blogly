@@ -76,4 +76,10 @@ def edit_user(user_id):
 
     return redirect("/users")
 
-# @app.post('/users/<int:user_id>/delete')
+@app.post('/users/<int:user_id>/delete')
+def delete_user(user_id):
+    """Delete a user."""
+    user = User.query.get(user_id)
+    user.query.delete()
+
+    return redirect('/users')
