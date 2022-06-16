@@ -94,11 +94,13 @@ def delete_user(user_id):
 
     return redirect('/users')
 
+
 @app.get('/users/<int:user_id>/posts/new')
 def display_form_add_post(user_id):
     """Show form to add a new post"""
     user = User.query.get_or_404(user_id)
     return render_template("/posts/add-post.html", user=user)
+
 
 @app.post('/users/<int:user_id>/posts/new')
 def add_post(user_id):
@@ -115,17 +117,20 @@ def add_post(user_id):
 
     return redirect(f'/users/{user_id}')
 
+
 @app.get('/posts/<int:post_id>')
 def display_post_page(post_id):
     """Show desired post page"""
     post = Post.query.get_or_404(post_id)
     return render_template('posts/detail.html', post=post)
 
+
 @app.get('/posts/<int:post_id>/edit')
 def display_form_edit_post(post_id):
     """Show edit form for the corresponding post"""
     post = Post.query.get_or_404(post_id)
     return render_template('posts/edit.html', post=post)
+
 
 @app.post('/posts/<int:post_id>/edit')
 def edit_post(post_id):
@@ -140,6 +145,7 @@ def edit_post(post_id):
     db.session.commit()
 
     return redirect(f"/posts/{post_id}")
+
 
 @app.post('/posts/<int:post_id>/delete')
 def delete_post(post_id):

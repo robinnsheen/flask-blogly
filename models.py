@@ -12,6 +12,7 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
+
 class User(db.Model):
     """User class that includes an id, the user's first name, last name,
     and an image url"""
@@ -29,10 +30,11 @@ class User(db.Model):
                           nullable=False)
 
     img_url = db.Column(db.String,
-                          nullable=False,
-                          default=DEFAULT_IMAGE_URL)
+                        nullable=False,
+                        default=DEFAULT_IMAGE_URL)
 
     posts = db.relationship('Post', backref='user')
+
 
 class Post(db.Model):
     """Post class that includes an post id, the post's title, content,

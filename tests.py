@@ -20,6 +20,7 @@ TEST_IMAGE_URL = "https://picsum.photos/id/307/200/300"
 
 db.create_all()
 
+
 class UserViewTestCase(TestCase):
     """Test views for users."""
 
@@ -50,6 +51,15 @@ class UserViewTestCase(TestCase):
         # value of their id, since it will change each time our tests are run.
         self.user_id = test_user.id
 
+        test_post = Post(title="test_title",
+                         content="test_content",
+                         user_id=self.user_id)
+
+        db.session.add_all([test_post])
+        db.session.commit()
+
+        self.post_id = test_post.id
+
     def tearDown(self):
         """Clean up any fouled transaction."""
         db.session.rollback()
@@ -77,9 +87,9 @@ class UserViewTestCase(TestCase):
         """Test redirection when adding user"""
         with app.test_client() as client:
             resp = client.post("/users/new",
-                                data={'first_name': 'test_first',
-                                      'last_name': 'test_last',
-                                      'img_url': DEFAULT_IMAGE_URL})
+                               data={'first_name': 'test_first',
+                                     'last_name': 'test_last',
+                                     'img_url': DEFAULT_IMAGE_URL})
 
             self.assertEqual(resp.status_code, 302)
             self.assertEqual(resp.location, "/users")
@@ -88,9 +98,9 @@ class UserViewTestCase(TestCase):
         """Test that a user is added and displays in users list"""
         with app.test_client() as client:
             resp = client.post("/users/new", follow_redirects=True,
-                                data={'first_name': 'test_first',
-                                      'last_name': 'test_last',
-                                      'img_url': DEFAULT_IMAGE_URL})
+                               data={'first_name': 'test_first',
+                                     'last_name': 'test_last',
+                                     'img_url': DEFAULT_IMAGE_URL})
 
             html = resp.get_data(as_text=True)
 
@@ -101,9 +111,9 @@ class UserViewTestCase(TestCase):
         """Test that a user can edit data and display changes"""
         with app.test_client() as client:
             resp = client.post(f'/users/{self.user_id}/edit', follow_redirects=True,
-                                data={'first_name': 'test_new_first',
-                                      'last_name': 'test_new_last',
-                                      'img_url': TEST_IMAGE_URL})
+                               data={'first_name': 'test_new_first',
+                                     'last_name': 'test_new_last',
+                                     'img_url': TEST_IMAGE_URL})
 
             html = resp.get_data(as_text=True)
 
@@ -126,12 +136,12 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 404)
 
     def test_add_post_submit(self):
-        """Test that a user is added and displays in users list"""
+        """Test that a post is added"""
         with app.test_client() as client:
             resp = client.post(f"/users/{self.user_id}/posts/new", follow_redirects=True,
-                                data={'title': 'test_title',
-                                      'content': 'test_content',
-                                      'user_id': f'self.user_id'})
+                               data={'title': 'test_title',
+                                     'content': 'test_content',
+                                     'user_id': f'{self.user_id}'})
 
             html = resp.get_data(as_text=True)
 
@@ -139,9 +149,33 @@ class UserViewTestCase(TestCase):
             self.assertIn('test_title', html)
 
             resp = client.post("/users/-1/posts/new", follow_redirects=True,
-                                data={'title': 'test_title',
-                                      'content': 'test_content',
-                                      'user_id': f'self.user_id'})
+                               data={'title': 'test_title',
+                                     'content': 'test_content',
+                                     'user_id': f'{self.user_id}'})
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 404)
+
+    def test_edit_post_submit(self):
+        """Test that a post can be edited and displays changes"""
+        with app.test_client() as client:
+            resp = client.post(f"/posts/{self.post_id}/edit", follow_redirects=True,
+                               data={'title': 'new_test_title',
+                                     'content': 'new_test_content'})
+
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('new_test_title', html)
+            self.assertIn('new_test_content', html)
+
+    def test_delete_post(self):
+        """Test that a post can be deleted"""
+        with app.test_client() as client:
+            resp = client.post(
+                f"/posts/{self.post_id}/delete", follow_redirects=True)
+
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn('test_title', html)
