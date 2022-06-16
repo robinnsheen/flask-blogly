@@ -33,10 +33,10 @@ class UserViewTestCase(TestCase):
 
         test_user = User(first_name="test_first",
                                     last_name="test_last",
-                                    image_url=None)
+                                    img_url=None)
 
         second_user = User(first_name="test_first_two", last_name="test_last_two",
-                           image_url=None)
+                           img_url=None)
 
         db.session.add_all([test_user, second_user])
         db.session.commit()
@@ -52,9 +52,45 @@ class UserViewTestCase(TestCase):
         db.session.rollback()
 
     def test_list_users(self):
+        """Test that the list of users shows"""
         with self.client as c:
             resp = c.get("/users")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("test_first", html)
             self.assertIn("test_last", html)
+
+    def test_form_add_user_shows(self):
+        """Test that the form to add user appears"""
+
+        with self.client as client:
+            resp = client.get("/users/new")
+            html = resp.get_data(as_text=True)
+
+            self.assertIn('Add user form', html)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_redirection_for_add_user(self):
+        """Test redirection when adding user"""
+        with app.test_client() as client:
+            resp = client.post("/users/new",
+                                data={'first_name': 'test_first',
+                                      'last_name': 'test_last',
+                                      'img_url': DEFAULT_IMAGE_URL})
+
+            self.assertEqual(resp.status_code, 302)
+            self.assertEqual(resp.location, "/users")
+
+    def test_add_user_submit(self):
+        """Test that a user is added and displays in users list"""
+        with app.test_client() as client:
+            resp = client.post("/users/new", follow_redirects=True,
+                                data={'first_name': 'test_first',
+                                      'last_name': 'test_last',
+                                      'img_url': DEFAULT_IMAGE_URL})
+
+            html = resp.get_data(as_text=True)
+
+            self.assertIn('test_first test_last', html)
+            self.assertEqual(resp.status_code, 200)
+
