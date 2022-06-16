@@ -38,6 +38,7 @@ def add_user():
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
     img_url = request.form["img_url"]
+    img_url = img_url if img_url else None
 
     new_user = User(first_name=first_name,
                     last_name=last_name,
@@ -66,6 +67,7 @@ def edit_user(user_id):
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
     img_url = request.form["img_url"]
+    img_url = img_url if img_url else None
 
     user = User.query.get(user_id)
     user.first_name = first_name
