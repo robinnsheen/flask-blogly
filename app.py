@@ -89,9 +89,6 @@ def edit_user(user_id):
 @app.post('/users/<int:user_id>/delete')
 def delete_user(user_id):
     """Delete a user."""
-    # user = User.query.get(user_id)
-    # user.query.delete()
-
     User.query.filter(User.id == user_id).delete()
     db.session.commit()
 
@@ -118,12 +115,40 @@ def add_post(user_id):
 
     return redirect(f'/users/{user_id}')
 
-# @app.get('/posts/<int:post_id>')
+@app.get('/posts/<int:post_id>')
+def display_post_page(post_id):
+    """Show desired post page"""
+    post = Post.query.get_or_404(post_id)
+    return render_template('posts/detail.html', post=post)
 
+@app.get('/posts/<int:post_id>/edit')
+def display_form_edit_post(post_id):
+    """Show edit form for the corresponding post"""
+    post = Post.query.get_or_404(post_id)
+    return render_template('posts/edit.html', post=post)
 
+@app.post('/posts/<int:post_id>/edit')
+def edit_post(post_id):
+    """Get info from edit post info form, update database, and redirect to posts"""
+    title = request.form["title"]
+    content = request.form["content"]
 
-# @app.get('/posts/<int:post_id>/edit')
+    post = Post.query.get(post_id)
+    post.title = title
+    post.content = content
 
-# @app.post('/posts/<int:post_id>/edit')
+    db.session.commit()
 
-# @app.post('/posts/<int:post_id>/delete')
+    return redirect(f"/posts/{post_id}")
+
+@app.post('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    """Delete a post."""
+
+    post = Post.query.get_or_404(post_id)
+    user_id = post.user.id
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
