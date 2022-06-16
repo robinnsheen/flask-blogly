@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app, db
-from models import DEFAULT_IMAGE_URL, User
+from models import DEFAULT_IMAGE_URL, User, Post
 
 # Let's configure our app to use a different database for tests
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///blogly_test"
@@ -108,3 +108,37 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('test_new_first test_new_last', html)
+
+    def test_form_add_post_shows(self):
+        """Test that the form to add post appears"""
+
+        with self.client as client:
+            resp = client.get(f"/users/{self.user_id}/posts/new")
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Add post form', html)
+
+            resp = client.get("/users/-1/posts/new")
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 404)
+
+    # def test_add_post_submit(self):
+    #     """Test that a user is added and displays in users list"""
+    #     with app.test_client() as client:
+    #         resp = client.post(f"/users/{self.user_id}/posts/new", follow_redirects=True,
+    #                             data={'title': 'test_title',
+    #                                   'content': 'test_content'})
+
+    #         html = resp.get_data(as_text=True)
+
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertIn('test_title', html)
+
+            # resp = client.post("/users/-1/posts/new", follow_redirects=True,
+            #                     data={'title': 'test_title',
+            #                           'content': 'test_content'})
+            # html = resp.get_data(as_text=True)
+
+            # self.assertEqual(resp.status_code, 404)
