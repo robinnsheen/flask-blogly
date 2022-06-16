@@ -79,7 +79,10 @@ def edit_user(user_id):
 @app.post('/users/<int:user_id>/delete')
 def delete_user(user_id):
     """Delete a user."""
-    user = User.query.get(user_id)
-    user.query.delete()
+    # user = User.query.get(user_id)
+    # user.query.delete()
+
+    User.query.filter(User.id == user_id).delete()
+    db.session.commit()
 
     return redirect('/users')
