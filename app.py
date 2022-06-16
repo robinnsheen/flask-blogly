@@ -2,7 +2,7 @@
 
 from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, render_template, redirect, request
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -110,7 +110,8 @@ def add_post(user_id):
     content = request.form["content"]
 
     new_post = Post(title=title,
-                    content=content)
+                    content=content,
+                    user_id=user_id)
 
     db.session.add(new_post)
     db.session.commit()
@@ -119,8 +120,10 @@ def add_post(user_id):
 
 # @app.get('/posts/<int:post_id>')
 
+
+
 # @app.get('/posts/<int:post_id>/edit')
 
 # @app.post('/posts/<int:post_id>/edit')
 
-# @app.post('/posts/<int:post_id>/delte')
+# @app.post('/posts/<int:post_id>/delete')
