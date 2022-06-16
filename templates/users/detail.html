@@ -7,8 +7,17 @@
 <img src="{{ user.img_url }}">
 <h1> {{ user.first_name }} {{ user.last_name }}</h1>
 
-<form >
+<form>
     <button formaction="/users/{{ user.id }}/edit" formmethod="GET">Edit</button>
     <button formaction="/users/{{ user.id }}/delete" formmethod="POST">Delete</button>
 </form>
+
+<h2>Posts</h2>
+<ul>
+    {% for post in posts %}
+    <li><a href="/posts/{{ post.id }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+
+<a href="/posts/add-post.html">Add post</a>
 {% endblock %}

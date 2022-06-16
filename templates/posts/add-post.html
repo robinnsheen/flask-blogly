@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %} New Post {% endblock %}
+
+{% block content %}
+
+<h1>Add Post for {{ user.first_name }} {{ user.last_name }}</h1>
+
+<form>
+  <p>Title <input name="title"></p>
+  <p>Content <input name="content"></p>
+
+  <button formaction="/users/{{ user.id }}" formmethod="GET">Cancel</button>
+  <button formaction="/users/{{ user.id }}" formmethod="POST">Save</button>
+</form>
+
+
+{% endblock %}
