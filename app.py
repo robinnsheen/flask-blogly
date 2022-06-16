@@ -33,7 +33,7 @@ def display_users():
 @app.get('/users/new')
 def display_form_add_user():
     """Show form to add a user"""
-    return render_template("users/form.html")
+    return render_template("users/add-user.html")
 
 
 @app.post('/users/new')
@@ -96,3 +96,31 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+@app.get('/users/<int:user_id>/posts/new')
+def display_form_add_post(user_id):
+    """Show form to add a new post"""
+    user = User.query.get_or_404(user_id)
+    return render_template("/posts/add-post.html", user=user)
+
+@app.post('/users/<int:user_id>/posts/new')
+def add_post(user_id):
+    """Gather form info to create a new post, add to database, and return to user detail page."""
+    title = request.form["title"]
+    content = request.form["content"]
+
+    new_post = Post(title=title,
+                    content=content)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
+# @app.get('/posts/<int:post_id>')
+
+# @app.get('/posts/<int:post_id>/edit')
+
+# @app.post('/posts/<int:post_id>/edit')
+
+# @app.post('/posts/<int:post_id>/delte')
