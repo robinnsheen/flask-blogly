@@ -135,10 +135,11 @@ def display_form_edit_post(post_id):
 @app.post('/posts/<int:post_id>/edit')
 def edit_post(post_id):
     """Get info from edit post info form, update database, and redirect to posts"""
+    post = Post.query.get_or_404(post_id)
+
     title = request.form["title"]
     content = request.form["content"]
 
-    post = Post.query.get(post_id)
     post.title = title
     post.content = content
 
