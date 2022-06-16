@@ -16,6 +16,8 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
 
+TEST_IMAGE_URL = "https://picsum.photos/id/307/200/300"
+
 db.create_all()
 
 class UserViewTestCase(TestCase):
@@ -94,3 +96,15 @@ class UserViewTestCase(TestCase):
             self.assertIn('test_first test_last', html)
             self.assertEqual(resp.status_code, 200)
 
+    def test_edit_user_submit(self):
+        """Test that a user can edit data and display changes"""
+        with app.test_client() as client:
+            resp = client.post(f'/users/{self.user_id}/edit', follow_redirects=True,
+                                data={'first_name': 'test_new_first',
+                                      'last_name': 'test_new_last',
+                                      'img_url': TEST_IMAGE_URL})
+
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('test_new_first test_new_last', html)
