@@ -1,5 +1,6 @@
 """Models for Blogly."""
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 
 db = SQLAlchemy()
 DEFAULT_IMAGE_URL = "https://picsum.photos/id/237/200/300"
@@ -30,3 +31,27 @@ class User(db.Model):
     img_url = db.Column(db.String,
                           nullable=False,
                           default=DEFAULT_IMAGE_URL)
+
+class Post(db.Model):
+    """Post class that includes an post id, the post's title, content,
+    date-created-at timestamp, and a user-id"""
+
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+
+    title = db.Column(db.String(100),
+                      nullable=False)
+
+    content = db.Column(db.String(1500),
+                        nullable=False)
+
+    created_at = db.Column(db.DateTime,
+                           nullable=False,
+                           default=db.func.now())
+
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id'),
+                        nullable=False)
