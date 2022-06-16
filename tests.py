@@ -29,6 +29,7 @@ class UserViewTestCase(TestCase):
         # As you add more models later in the exercise, you'll want to delete
         # all of their records before each test just as we're doing with the
         # User model below.
+        Post.query.delete()
         User.query.delete()
 
         self.client = app.test_client()
@@ -124,21 +125,23 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 404)
 
-    # def test_add_post_submit(self):
-    #     """Test that a user is added and displays in users list"""
-    #     with app.test_client() as client:
-    #         resp = client.post(f"/users/{self.user_id}/posts/new", follow_redirects=True,
-    #                             data={'title': 'test_title',
-    #                                   'content': 'test_content'})
+    def test_add_post_submit(self):
+        """Test that a user is added and displays in users list"""
+        with app.test_client() as client:
+            resp = client.post(f"/users/{self.user_id}/posts/new", follow_redirects=True,
+                                data={'title': 'test_title',
+                                      'content': 'test_content',
+                                      'user_id': f'self.user_id'})
 
-    #         html = resp.get_data(as_text=True)
+            html = resp.get_data(as_text=True)
 
-    #         self.assertEqual(resp.status_code, 200)
-    #         self.assertIn('test_title', html)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('test_title', html)
 
-            # resp = client.post("/users/-1/posts/new", follow_redirects=True,
-            #                     data={'title': 'test_title',
-            #                           'content': 'test_content'})
-            # html = resp.get_data(as_text=True)
+            resp = client.post("/users/-1/posts/new", follow_redirects=True,
+                                data={'title': 'test_title',
+                                      'content': 'test_content',
+                                      'user_id': f'self.user_id'})
+            html = resp.get_data(as_text=True)
 
-            # self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.status_code, 404)
