@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} New Tag {% endblock %}
+
+{% block content %}
+
+<!-- Add tag form (for testing)-->
+
+<h1>Create a tag</h1>
+
+<form>
+  <p>Name <input name="name" placeholder="Enter a name for the tag"></p>
+
+  <button formaction="/posts/{{ post.id }} " formmethod="GET">Cancel</button>
+  <button formaction="/posts/{{ post.id }}/new" formmethod="POST">Add</button>
+</form>
+
+
+{% endblock %}
