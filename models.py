@@ -84,7 +84,7 @@ class Tag(db.Model):
 class PostTag(db.Model):
     """PostTag class that includes a foreign post_id and a foreign tag_id"""
 
-    __tablename__ = "tags"
+    __tablename__ = "post_tags"
 
     post_id = db.Column(db.Integer,
                         db.ForeignKey('posts.id'),
