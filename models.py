@@ -59,3 +59,39 @@ class Post(db.Model):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
                         nullable=False)
+
+    post_tag = db.relationship('PostTag',
+                               backref='post')
+
+
+class Tag(db.Model):
+    """Tag class that includes an tag id and tag name"""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+
+    name = db.Column(db.String(20),
+                     nullable=False,
+                     unique=True)
+
+    post_tag = db.relationship('PostTag',
+                               backref='tag')
+
+
+class PostTag(db.Model):
+    """PostTag class that includes a foreign post_id and a foreign tag_id"""
+
+    __tablename__ = "tags"
+
+    post_id = db.Column(db.Integer,
+                        db.ForeignKey('posts.id'),
+                        nullable=False,
+                        primary_key=True)
+
+    tag_id = db.Column(db.Integer,
+                       db.ForeignKey('tags.id'),
+                       nullable=False,
+                       primary_key=True)
